@@ -13,46 +13,27 @@
             var layer = document.getElementById('layer');
             new daum.Postcode({
                 oncomplete: function(data) {
-                    var fullAddr = data.address; // 최종 주소 변수
+                    var fullAddr = data.address; 
                     var extraAddr = ''; // 조합형 주소 변수
 
-                    // 기본주소가 도로명인 경우
-                    if(data.addressType === 'R'){
-                        if(data.bname !== ''){ // 법정동명
-                            extraAddr += data.bname;
-                        }
-
-                        if(data.buildingName !== ''){ // 건물명
-                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                        }
-
-                        // 최종주소 
-                        fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
-                    }
-
-                    var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
-                    var extraRoadAddr = ''; // 도로명 조합형 주소 변수
-
-
                     if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){ // 법정동명
-                        extraRoadAddr += data.bname;
+                        extraAddr += data.bname;
                     }
 
                     if(data.buildingName !== '' && data.apartment === 'Y'){ // 건물명이 있는 공동 주택
-                       extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                       extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
                     }
 
                     // 최종 주소
-                    if(extraRoadAddr !== ''){
-                        extraRoadAddr = ' (' + extraRoadAddr + ')';
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
                     }
-                    if(fullRoadAddr !== ''){
-                        fullRoadAddr += extraRoadAddr;
+                    if(fullAddr !== ''){
+                        fullAddr += extraAddr;
                     }
-
 
                     // Android 호출
-                    window.Android.processData(data.zonecode + ", " + fullRoadAddr);
+                    window.Android.processData(data.zonecode, fullAddr);
                 }
             }).embed(layer);
         }
