@@ -9,6 +9,8 @@
 
         <script src = "https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
         <script>
+        window.onload = function() = {execDaumPostcode();}
+            
         function execDaumPostcode() {
             var layer = document.getElementById('layer');
             new daum.Postcode({
